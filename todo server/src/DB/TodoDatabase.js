@@ -1,18 +1,19 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config(); // Load .env file
 
-let todoDb = "mongodb://localhost:27017/todo-db"
+async function connectToDatabase() {
+    try {
+        console.log("🔍 URI from .env:", process.env.MONGO_URI);
 
-async function connectToDatabase() 
-{
-    try
-    {
-        let connection = await mongoose.connect(todoDb)
-        console.log("Database connected", connection.connection.name)
+        let connection = await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("Database connected:", connection.connection.name);
+    } catch (error) {
+        console.log(" DB connection error:", error);
     }
-    catch(error)
-    {
-        console.log(error)
-    }
-    
 }
-export {connectToDatabase}
+
+export { connectToDatabase };
